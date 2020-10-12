@@ -27,6 +27,7 @@ class DoublePendulum(Scene):
         l1 = 4
         l2 = 2.3
 
+        ## Scaling factor of velocity and acceleration vectors
         scale_v = 0.5
         scale_w = 0.2
 
