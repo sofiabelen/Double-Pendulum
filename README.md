@@ -8,7 +8,7 @@
 
 ![Alt text](Images/diagram.png?raw=true)
 
-Given the angles φ₁ and φ₂ as functions of time, we show the positions of point A and B, and also the velocity and acceleration vectors at every point in time.
+Given the angles φ₁ and φ₂ as functions of time, we show the positions of point A and B, and also the velocity and acceleration vectors at every point in time. Also, we draw the trajectories of the instantaneous centers of zero velocity and acceleration.
 
 To do this, we use the python library [SymPy](https://www.sympy.org/en/index.html) to differentiate the position vectors of both points. This way, it's possible to input any two function that are twice differentiable.
 
