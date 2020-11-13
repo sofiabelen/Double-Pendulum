@@ -35,7 +35,7 @@ class DoublePendulum(Scene):
         
         ## Angles given as functions of time
         phi1 = sp.cos(t)
-        phi2 = sp.sin(t)
+        phi2 = sp.sin(t * 2)
 
         ## Coordinates of points A and B
         x1 = l1 * sp.sin(phi1) + center[0]
@@ -54,6 +54,12 @@ class DoublePendulum(Scene):
         wy1 = sp.diff(vy1)
         wx2 = sp.diff(vx2)
         wy2 = sp.diff(vy2)
+
+        ## Angular velocity of vector AB
+        omega = (vy2 - vy1) / (x2 - x1)
+
+        ## Angular acceleration of vector AB
+        epsilon = sp.diff(omega)
         
         ## Turn our sympy expressions into functions
         x1_func = sp.lambdify(t, x1, "numpy")
@@ -71,41 +77,12 @@ class DoublePendulum(Scene):
         wx2_func = sp.lambdify(t, wx2, "numpy")
         wy2_func = sp.lambdify(t, wy2, "numpy")
 
-        ## Function to intersect two lines given by their direction
-        ## vectors and a point
-        ## If the direction vectors are parallel, then we find the
-        ## the center of velocities/accelerations using the
-        ## proportionality of velocity and distance from the ICV 
-        ## to create similar triangles
-        def intersect(v1, v2, p1, p2):
-            if (v1[0] * v2[1] - v1[1] * v2[0] == 0):
-                tmp = v1[0]
-                v1[0] = -v1[1]
-                v1[1] = tmp
-                tmp = v2[0]
-                v2[0] = -v2[1]
-                v2[1] = tmp
-
-                # print(intersect(p2 - p1, (p2 + v2) - (p1 + v1),\
-                #         p1, p1 + v1))
-                return intersect(p2 - p1, (p2 + v2) - (p1 + v1),\
-                        p1, p1 + v1)
-        
-            b = (p1[0] * v1[1] - p1[1] * v1[0]\
-                    - p2[0] * v1[1] + p2[1] * v1[0]) /\
-                    (v2[0] * v1[1] - v2[1] * v1[0])
-        
-            if (v1[0] != 0):
-                a = (p2[0] + b * v2[0] - p1[0]) / v1[0]
-            elif (v2[0] != 0):
-                a = (p2[1] + b * v2[1] - p1[1]) / v1[1]
-        
-            inter = p1 + a * v1
-            return np.array([inter[0], inter[1], 0])
+        omega_func = sp.lambdify(t, omega, "numpy")
+        epsilon_func = sp.lambdify(t, epsilon, "numpy")
 
         ## Time step and time duration
         dt = 0.01
-        t = np.arange(0.0, 30, dt)
+        t = np.arange(0.0, 20, dt)
         t[len(t) - 1] = 0.000000001
 
         ## Create moving objects for points A and B, their velocities,
@@ -136,18 +113,17 @@ class DoublePendulum(Scene):
         w2.make_smooth().set_stroke(None, 2)
 
         vc = VMobject()
-        vc.set_points([*[intersect(np.array([\
-                vy1_func(t0), -vx1_func(t0)]),\
-                np.array([vy2_func(t0), -vx2_func(t0)]),\
-                np.array([x1_func(t0), y1_func(t0)]),\
-                np.array([x2_func(t0), y2_func(t0)])) for t0 in t]])
+        vc.set_points([*[[x1_func(t0) - vy1_func(t0) / omega_func(t0),\
+                y1_func(t0) + vx1_func(t0) / omega_func(t0), 0] for t0 in t]])
+
 
         wc = VMobject(color=RED)
-        wc.set_points([*[intersect(np.array([\
-                wy1_func(t0), -wx1_func(t0)]),\
-                np.array([wy2_func(t0), -wx2_func(t0)]),\
-                np.array([x1_func(t0), y1_func(t0)]),\
-                np.array([x2_func(t0), y2_func(t0)])) for t0 in t]])
+        wc.set_points([*[[x1_func(t0) -\
+            (wx1_func(t0) * omega_func(t0) + wy1_func(t0) * epsilon_func(t0)) \
+            / (omega_func(t0)**2 + epsilon_func(t0)**2), y1_func(t0) + \
+            (-wy1_func(t0) * omega_func(t0) + wx1_func(t0) * epsilon_func(t0)) \
+            / (omega_func(t0)**2 + epsilon_func(t0)**2), 0]
+                for t0 in t]])
 
         arrow1 = Arrow()
         arrow1.put_start_and_end_on(p2.get_end(), v2.get_end())
@@ -240,7 +216,7 @@ class DoublePendulum(Scene):
         self.play(Write(arrow1), Write(arrow2), Write(arrow5), Write(arrow6))
         self.play(Write(arrow3), Write(v_tex), Write(arrow4), Write(w_tex))
         self.play(Write(eq1), Write(eq2))
-        self.play(Write(dotvc_legend), Write(vc_tex),\
+        self.play(Write(dotvc_legend), Write(vc_tex), \
                Write(dotwc_legend), Write(wc_tex))
  
         p1.fade(1)
@@ -256,5 +232,6 @@ class DoublePendulum(Scene):
 
         self.play(ShowCreation(p1), ShowCreation(p2), ShowCreation(v1),\
                 ShowCreation(v2), ShowCreation(w1), ShowCreation(w2),\
-                ShowCreation(vc), ShowCreation(wc),\
-                rate_func=linear,run_time=30)
+                ShowCreation(vc), \
+                ShowCreation(wc), \
+                rate_func=linear,run_time=20)
