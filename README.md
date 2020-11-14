@@ -2,11 +2,11 @@
 
 ### Made with 3Blue1Brown's animation engine: [manim](https://github.com/3b1b/manim)
 
-![Alt text](Images/demo.png?raw=true)
+![Alt text](media/demo.png?raw=true)
 
 ## The Problem
 
-![Alt text](Images/diagram.png?raw=true)
+![Alt text](media/diagram.png?raw=true)
 
 Given the angles φ₁ and φ₂ as functions of time, we show the positions of point A and B, and also the velocity and acceleration vectors at every point in time. Also, we draw the trajectories of the instantaneous centers of zero velocity and acceleration.
 
