@@ -1,0 +1,119 @@
+\documentclass[a4paper,12pt]{report}
+
+\usepackage[margin=0.9in]{geometry}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage[utf8]{inputenc}
+\usepackage[T2A]{fontenc}
+\usepackage{textcomp}
+\usepackage{amsmath, amssymb}
+\usepackage{siunitx}
+\usepackage{mathtools}% http://ctan.org/pkg/mathtools
+\usepackage{cancel}
+\usepackage{xcolor}
+\usepackage{bm}
+
+\definecolor{grey}{HTML}{737373}
+
+\begin{document}
+
+\begin{enumerate}
+  \item Ищем центр скоростей по формуле Эйлера.
+
+\[
+\vec{v}_B = \vec{v}_A + \vec{\omega} \times \vec{AB}
+.\] 
+
+\[
+  \begin{pmatrix} 
+    v_{Bx} - v_{Ax} \\
+    v_{By} - v_{Ay} \\
+    0
+  \end{pmatrix} 
+  \begin{pmatrix}
+    -\omega \cdot \left( y_B - y_A \right) \\
+    \omega \cdot ( x_B - x_A) \\
+    0
+  \end{pmatrix} 
+.\] 
+
+\[
+  \implies \omega = \frac{v_{By} - V_{Ay}}{x_B - x_A}
+.\] 
+
+\[
+  \cancelto{0}{\vec{v}_C} = \vec{v}_A + \vec{\omega} \times \vec{AC}
+.\] 
+
+\[
+-\vec{v}_A = \begin{pmatrix} 
+  -\omega \cdot (y_C - y_A) \\
+  \omega \cdot (x_C - x_A) \\
+  0
+\end{pmatrix} 
+.\] 
+
+\[
+\implies
+\begin{cases}
+  x_C = x_A - \frac{v_{Ay}}{\omega} \\
+  y_C = y_A + \frac{v_{Ax}}{\omega}
+\end{cases}
+.\] 
+
+  \item Ищем центр ускорений по формуле Ривальса.
+
+\[
+  \vec{w}_C = 0 = \vec{w}_A + \vec{\varepsilon} \times \vec{AC} - \omega^2 \vec{AC}
+.\] 
+
+\[
+\begin{pmatrix} 0 \\ 0 \\ \varepsilon \end{pmatrix} =
+\begin{pmatrix} 0 \\ 0 \\ \dot \omega \end{pmatrix} 
+.\] 
+
+\[
+-\vec{w}_A = \begin{pmatrix} 
+  -\varepsilon(y_C - y_A) - \omega(x_C - x_A) \\
+  \varepsilon (x_C - x_A) + \omega(y_C - y_A) \\
+  0
+\end{pmatrix} 
+.\] 
+
+\[
+\implies
+\begin{cases}
+  \omega (x_C - x_A) = -w_{Ax} + \varepsilon(y_C - y_A) \\
+  \omega (y_C - y_A) = -w_{Ay} - \varepsilon(x_C - x_A)
+\end{cases}
+.\] 
+
+\[
+  \omega (x_C - x_A) = -w_{Ax} - \frac{\varepsilon}{\omega}
+  (w_{Ay} + \varepsilon(x_C - x_A))
+.\] 
+
+\[
+  (x_C - x_A)\left( \omega^2 + \varepsilon^2 \right) =
+  -\omega w_{Ax} - \varepsilon w_{Ay}
+.\] 
+
+\[
+  \omega^2 (y_C - y_A) = -\omega w_{Ay} - \varepsilon
+  (-w_{Ax} + \varepsilon (y_C - y_A))
+.\] 
+
+\[
+  (y_C - y_A) \left( \omega^2 + \varepsilon^2 \right)  = -\omega w_{Ay} + \varepsilon w_{Ax}
+.\] 
+
+\[
+\boxed{x_C = x_A - \frac{w_{Ax} \omega + \varepsilon w_{Ay}}{\omega^2 + \varepsilon^2} }
+.\] 
+
+\[
+  \boxed{ y_C = y_A + \frac{-w_{Ay} \omega + \varepsilon w_{Ax}}{\omega^2 + \varepsilon^2}}
+.\] 
+
+\end{enumerate}
+\end{document}
