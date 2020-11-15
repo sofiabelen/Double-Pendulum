@@ -38,7 +38,7 @@
 .\] 
 
 \[
-  \implies \omega = \frac{v_{By} - V_{Ay}}{x_B - x_A}
+  \implies \omega = \frac{v_{By} - v_{Ay}}{x_B - x_A}
 .\] 
 
 \[
@@ -74,8 +74,8 @@
 
 \[
 -\vec{w}_A = \begin{pmatrix} 
-  -\varepsilon(y_C - y_A) - \omega(x_C - x_A) \\
-  \varepsilon (x_C - x_A) + \omega(y_C - y_A) \\
+  -\varepsilon(y_C - y_A) - \omega^2 (x_C - x_A) \\
+  \varepsilon (x_C - x_A) - \omega^2 (y_C - y_A) \\
   0
 \end{pmatrix} 
 .\] 
@@ -83,36 +83,37 @@
 \[
 \implies
 \begin{cases}
-  \omega (x_C - x_A) = -w_{Ax} + \varepsilon(y_C - y_A) \\
-  \omega (y_C - y_A) = -w_{Ay} - \varepsilon(x_C - x_A)
+  \omega^2 (x_C - x_A) = w_{Ax} - \varepsilon(y_C - y_A) \\
+  \omega^2 (y_C - y_A) = w_{Ay} + \varepsilon(x_C - x_A)
 \end{cases}
 .\] 
 
 \[
-  \omega (x_C - x_A) = -w_{Ax} - \frac{\varepsilon}{\omega}
+  \omega^2 (x_C - x_A) = w_{Ax} - \frac{\varepsilon}{\omega^2}
   (w_{Ay} + \varepsilon(x_C - x_A))
 .\] 
 
 \[
-  (x_C - x_A)\left( \omega^2 + \varepsilon^2 \right) =
-  -\omega w_{Ax} - \varepsilon w_{Ay}
+  (x_C - x_A)\left( \omega^4 + \varepsilon^2 \right) =
+  \omega^2 w_{Ax} - \varepsilon w_{Ay}
 .\] 
 
 \[
-  \omega^2 (y_C - y_A) = -\omega w_{Ay} - \varepsilon
-  (-w_{Ax} + \varepsilon (y_C - y_A))
+  \boxed{ x_C = x_A + \frac{\omega^2 w_{Ax} - \varepsilon w_{Ay}}
+  {\omega^4 + \varepsilon^2}}
 .\] 
 
 \[
-  (y_C - y_A) \left( \omega^2 + \varepsilon^2 \right)  = -\omega w_{Ay} + \varepsilon w_{Ax}
+  \omega^4 (y_C - y_A) = \omega^2 w_{Ay} + \varepsilon
+  (w_{Ax} - \varepsilon (y_C - y_A))
 .\] 
 
 \[
-\boxed{x_C = x_A - \frac{w_{Ax} \omega + \varepsilon w_{Ay}}{\omega^2 + \varepsilon^2} }
+  (y_C - y_A) \left( \omega^4 + \varepsilon^2 \right)  = \omega^2 w_{Ay} + \varepsilon w_{Ax}
 .\] 
 
 \[
-  \boxed{ y_C = y_A + \frac{-w_{Ay} \omega + \varepsilon w_{Ax}}{\omega^2 + \varepsilon^2}}
+  \boxed{ y_C = y_A + \frac{w_{Ay} \omega^2 + \varepsilon w_{Ax}}{\omega^4 + \varepsilon^2}}
 .\] 
 
 \end{enumerate}

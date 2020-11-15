@@ -60,6 +60,14 @@ class DoublePendulum(Scene):
 
         ## Angular acceleration of vector AB
         epsilon = sp.diff(omega)
+
+        ## Instantenous center of velocity
+        vxc = x1 - vy1 / omega
+        vyc = y1 + vx1 / omega
+
+        ## Instantenous center of acceleration
+        wxc = x1 + (wx1 * omega**2 - epsilon * wy1) / (omega**4 + epsilon**2)
+        wyc = y1 + (wy1 * omega**2 + epsilon * wx1) / (omega**4 + epsilon**2)
         
         ## Turn our sympy expressions into functions
         x1_func = sp.lambdify(t, x1, "numpy")
@@ -80,9 +88,15 @@ class DoublePendulum(Scene):
         omega_func = sp.lambdify(t, omega, "numpy")
         epsilon_func = sp.lambdify(t, epsilon, "numpy")
 
+        vxc_func = sp.lambdify(t, vxc, "numpy")
+        vyc_func = sp.lambdify(t, vyc, "numpy")
+
+        wxc_func = sp.lambdify(t, wxc, "numpy")
+        wyc_func = sp.lambdify(t, wyc, "numpy")
+
         ## Time step and time duration
         dt = 0.01
-        t = np.arange(0.0, 20, dt)
+        t = np.arange(0.0, 10, dt)
         t[len(t) - 1] = 0.000000001
 
         ## Create moving objects for points A and B, their velocities,
@@ -113,17 +127,10 @@ class DoublePendulum(Scene):
         w2.make_smooth().set_stroke(None, 2)
 
         vc = VMobject()
-        vc.set_points([*[[x1_func(t0) - vy1_func(t0) / omega_func(t0),\
-                y1_func(t0) + vx1_func(t0) / omega_func(t0), 0] for t0 in t]])
-
+        vc.set_points([*[[vxc_func(t0), vyc_func(t0), 0] for t0 in t]])
 
         wc = VMobject(color=RED)
-        wc.set_points([*[[x1_func(t0) -\
-            (wx1_func(t0) * omega_func(t0) + wy1_func(t0) * epsilon_func(t0)) \
-            / (omega_func(t0)**2 + epsilon_func(t0)**2), y1_func(t0) + \
-            (-wy1_func(t0) * omega_func(t0) + wx1_func(t0) * epsilon_func(t0)) \
-            / (omega_func(t0)**2 + epsilon_func(t0)**2), 0]
-                for t0 in t]])
+        wc.set_points([*[[wxc_func(t0), wyc_func(t0), 0] for t0 in t]])
 
         arrow1 = Arrow()
         arrow1.put_start_and_end_on(p2.get_end(), v2.get_end())
@@ -234,4 +241,4 @@ class DoublePendulum(Scene):
                 ShowCreation(v2), ShowCreation(w1), ShowCreation(w2),\
                 ShowCreation(vc), \
                 ShowCreation(wc), \
-                rate_func=linear,run_time=20)
+                rate_func=linear,run_time=10)
